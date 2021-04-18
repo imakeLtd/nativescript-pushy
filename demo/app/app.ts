@@ -1,4 +1,4 @@
-import * as app from "tns-core-modules/application";
+import { Application } from "@nativescript/core";
 
 require("nativescript-local-notifications");
 
@@ -6,4 +6,4 @@ require("nativescript-local-notifications");
 // In this demo it's not needed because the plugin is not lazily loaded (AoT), but just to be safe..
 require("nativescript-pushy");
 
-app.run({moduleName: "app-root"});
+Application.run({moduleName: "app-root"});

@@ -1,34 +1,25 @@
 {
   "nativescript": {
-    "id": "org.nativescript.plugin.pushy",
-    "tns-ios": {
-      "version": "6.1.0"
-    },
+    "id": "za.co.digitlab.GFConnect",
     "tns-android": {
-      "version": "6.1.0"
+      "version": "6.5.0"
+    },
+    "tns-ios": {
+      "version": "6.5.0"
     }
   },
+  "main": "app.js",
   "dependencies": {
-    "nativescript-local-notifications": "~4.0.1",
-    "nativescript-pushy": "file:../src",
-    "nativescript-theme-core": "^1.0.4",
-    "nativescript-unit-test-runner": "0.7.0",
-    "tns-core-modules": "~6.1.0"
+    "@nativescript/core": "~6.5.0",
+    "@nativescript/theme": "~2.3.0",
+    "nativescript-local-notifications": "4.2.1",
+    "nativescript-pushy": "file:../src"
   },
   "devDependencies": {
-    "jasmine-core": "^2.5.2",
-    "karma": "4.1.0",
-    "karma-jasmine": "2.0.1",
-    "karma-nativescript-launcher": "^0.4.0",
-    "karma-webpack": "3.0.5",
-    "nativescript-css-loader": "~0.26.1",
-    "nativescript-dev-webpack": "~1.2.0",
-    "tns-platform-declarations": "~6.1.0",
-    "tslint": "~5.12.1",
-    "typescript": "3.4.5"
+    "nativescript-dev-webpack": "~1.5.0",
+    "tns-platform-declarations": "~6.5.0",
+    "typescript": "~3.8.3"
   },
-  "scripts": {
-    "build.plugin": "cd ../src && npm run build",
-    "ci.tslint": "npm i && tslint --config '../tslint.json' 'app/**/*.ts' --exclude '**/node_modules/**' --exclude '**/platforms/**'"
-  }
+  "gitHead": "20a65d338ae8f8911087ab6615b89363f864b07b",
+  "readme": "NativeScript Application"
 }

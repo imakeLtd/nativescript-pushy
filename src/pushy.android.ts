@@ -1,7 +1,7 @@
-import { ApplicationEventData } from "tns-core-modules/application";
-import * as application from "tns-core-modules/application";
-import { AndroidActivityRequestPermissionsEventData, LaunchEventData } from "tns-core-modules/application";
-import * as utils from "tns-core-modules/utils/utils";
+import { ApplicationEventData } from "@nativescript/core/application";
+import * as application from "@nativescript/core/application";
+import { AndroidActivityRequestPermissionsEventData, LaunchEventData } from "@nativescript/core/application";
+import * as utils from "@nativescript/core/utils/utils";
 import { TNSPushNotification } from "./";
 
 declare const androidx, com: any;
@@ -18,7 +18,6 @@ application.on(application.suspendEvent, () => appInForeground = false);
 
 export function getDevicePushToken(): Promise<string> {
   return new Promise<string>((resolve, reject) => {
-    const onWriteExternalStoragePermissionGranted = () => {
       me.pushy.sdk.Pushy.listen(getActivity());
 
       // Either do this, or (preferred) move the 'register' logic into a worker / native code,
@@ -30,15 +29,6 @@ export function getDevicePushToken(): Promise<string> {
       // Note that this is a blocking call, so not ideal to do this on the main thread
       const deviceToken = me.pushy.sdk.Pushy.register(utils.ad.getApplicationContext());
       resolve(deviceToken);
-    };
-
-
-    if (writeExternalStoragePermissionGranted()) {
-      onWriteExternalStoragePermissionGranted();
-    } else {
-      requestWriteExternalStoragePermission()
-          .then(granted => granted && onWriteExternalStoragePermissionGranted());
-    }
   });
 }
 
@@ -46,42 +36,23 @@ export function setNotificationHandler(handler: (notification: TNSPushNotificati
   notificationHandler = handler;
   const extras = getActivity().getIntent().getExtras();
   if (extras && extras.getBoolean("push_tapped")) {
-    const notification = transformNativeNotificationIntoTNSPushNotification(extras);
+    var notification = transformNativeNotificationIntoTNSPushNotification(extras);
     if (notification) {
-      notification.foreground = true;
-      pendingNotifications.push(notification);
+        notification.foreground = true;
+        pendingNotifications.push(notification);
     }
-  }
+
+    const intent = getActivity().getIntent();
+    intent.replaceExtras(new android.os.Bundle());
+    intent.setAction("");
+    intent.setData(null);
+    intent.setFlags(0);
+}
   processPendingNotifications();
 }
 
 function getActivity() {
   return application.android.foregroundActivity || application.android.startActivity;
-}
-
-function writeExternalStoragePermissionGranted(): boolean {
-  let hasPermission = android.os.Build.VERSION.SDK_INT < 23; // Android M. (6.0)
-  if (!hasPermission) {
-    hasPermission = android.content.pm.PackageManager.PERMISSION_GRANTED === androidx.core.content.ContextCompat.checkSelfPermission(utils.ad.getApplicationContext(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
-  }
-  return hasPermission;
-}
-
-function requestWriteExternalStoragePermission(): Promise<boolean> {
-  return new Promise((resolve, reject) => {
-    const onPermissionResultCallback = (args: AndroidActivityRequestPermissionsEventData) => {
-      if (args.requestCode === WRITE_EXTERNAL_STORAGE_PERMISSION_REQUEST_CODE && args.grantResults.length === 1) {
-        application.android.off(application.AndroidApplication.activityRequestPermissionsEvent, onPermissionResultCallback);
-        resolve(args.grantResults[0] !== android.content.pm.PackageManager.PERMISSION_DENIED);
-      }
-    };
-
-    // grab the permission dialog result
-    application.android.on(application.AndroidApplication.activityRequestPermissionsEvent, onPermissionResultCallback);
-
-    // invoke the permission dialog
-    androidx.core.app.ActivityCompat.requestPermissions(getActivity(), [android.Manifest.permission.WRITE_EXTERNAL_STORAGE], WRITE_EXTERNAL_STORAGE_PERMISSION_REQUEST_CODE);
-  });
 }
 
 const processPendingNotifications = (): void => {
@@ -149,7 +120,7 @@ class PushyPushReceiver extends android.content.BroadcastReceiver {
     // Prepare a notification with vibration, sound and lights
     const builder = new androidx.core.app.NotificationCompat.Builder(context)
         .setAutoCancel(true)
-        .setSmallIcon(android.R.drawable.ic_dialog_info)
+        .setSmallIcon(android.R.drawable.ic_notification_overlay)
         .setContentTitle(notification.title)
         .setContentText(notification.message)
         // .setLights(Color.RED, 1000, 1000)
@@ -177,5 +148,4 @@ class PushyPushReceiver extends android.content.BroadcastReceiver {
 
 export function showNotificationWhenAppInForeground(show: boolean): void {
   showForegroundNotifications = show;
-  console.log("TCL: showForegroundNotifications", showForegroundNotifications);
 }
