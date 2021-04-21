@@ -20,6 +20,9 @@ pack() {
     echo 'Copying src...'
     node_modules/.bin/ncp "$SOURCE_DIR" "$TO_SOURCE_DIR"
 
+    # remove native-src folder as we don't want to pack this
+    node_modules/.bin/rimraf ./src/native-src
+
     # copy README & LICENSE to src
     echo 'Copying README and LICENSE to /src...'
     node_modules/.bin/ncp "$ROOT_DIR"/LICENSE "$TO_SOURCE_DIR"/LICENSE
