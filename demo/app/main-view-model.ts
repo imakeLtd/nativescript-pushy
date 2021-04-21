@@ -1,5 +1,4 @@
-import { LocalNotifications } from "nativescript-local-notifications";
-import { getDevicePushToken, setNotificationHandler } from "nativescript-pushy";
+import { getDevicePushToken, setNotificationHandler, showNotificationWhenAppInForeground, subscribe, unregister, unsubscribe } from "nativescript-pushy";
 import { Observable } from "@nativescript/core";
 
 export class HelloWorldModel extends Observable {
@@ -9,25 +8,16 @@ export class HelloWorldModel extends Observable {
     super();
 
     setNotificationHandler(notification => {
-      console.log(`Notification received: ${JSON.stringify(notification)}`);
+      console.dir(notification);
 
       setTimeout(() => {
         alert({
-          title: "Notification received",
-          message: JSON.stringify(notification),
+          title: notification.title,
+          message: notification.message,
           okButtonText: "OK"
         });
       }, 500);
     });
-  }
-
-  public doScheduleLocalNotification(): void {
-    LocalNotifications.schedule([{
-      id: 1,
-      title: "Local FTW",
-      body: "I'm a local notification",
-      at: new Date(new Date().getTime() + (10 * 1000)) // 10 seconds from now
-    }]).then(() => console.log("Will show a local notification in 10 seconds"));
   }
 
   public doGetDevicePushToken(): void {
@@ -36,6 +26,25 @@ export class HelloWorldModel extends Observable {
           console.log(`getDevicePushToken success, token: ${token}`);
           this.set("message", "token: " + token);
         })
-        .catch(err => this.set("message", err));
+        .catch(err => {
+          this.set("message", err)
+
+          console.log(err.stack)
+        });
+
+    showNotificationWhenAppInForeground(true);
+  }
+
+  public doUnregister(): void {
+    this.set("message", "");
+    unregister();
+  }
+
+  public subscribeToGeneralTopic() {
+    subscribe("general");
+  }
+
+  public unsubscribeToGeneralTopic() {
+    unsubscribe("general");
   }
 }

@@ -215,3 +215,42 @@ const processPendingNotifications = (): void => {
 export function showNotificationWhenAppInForeground(show: boolean): void {
   showForegroundNotifications = show;
 }
+
+export function unregister() {
+  pushy.unregister();
+}
+
+export function isRegistered() {
+  pushy.isRegistered();
+}
+
+export function isConnected() {
+  // not available on iOS
+  return;
+}
+
+export function toggleNotifications(enabled: boolean): void {
+  // not available on iOS
+  return;
+}
+
+export function toggleFCM(enabled: boolean): void {
+  // not available on iOS
+  return;
+}
+
+export function subscribe(topic: string | string[]): void {
+  pushy.subscribeWithTopicHandler(topic, (error) => {
+    if (!error) {
+      console.log('topic subscribed successfully');
+    }
+  });
+}
+
+export function unsubscribe(topic: string | string[]): void {
+  pushy.unsubscribeWithTopicHandler(topic, (error) => {
+    if (!error) {
+      console.log('topic subscribed successfully');
+    }
+  });
+}

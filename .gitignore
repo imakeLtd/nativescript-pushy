@@ -26,3 +26,5 @@ demo/report/report.html
 demo/report/stats.json
 !demo-vue/app/app.js
 !demo/webpack.config.js
+!demo/demo.webpack.config.js
+!demo/app/activity.android.js

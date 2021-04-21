@@ -12,11 +12,11 @@
   "dependencies": {
     "@nativescript/core": "~6.5.0",
     "@nativescript/theme": "~2.3.0",
-    "nativescript-local-notifications": "4.2.1",
     "nativescript-pushy": "file:../src"
   },
   "devDependencies": {
     "nativescript-dev-webpack": "~1.5.0",
+    "tns-android": "6.5.0",
     "tns-platform-declarations": "~6.5.0",
     "typescript": "~3.8.3"
   },
