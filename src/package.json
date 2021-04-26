@@ -1,6 +1,6 @@
 {
   "name": "nativescript-pushy",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Lightning-fast, highly-reliable push notification delivery with https://pushy.me",
   "main": "pushy",
   "typings": "index.d.ts",
@@ -19,7 +19,7 @@
     "test.ios": "npm run tsc && npm run tslint && cd ../demo && tns build ios && tns test ios --justlaunch",
     "tslint": "cd .. && tslint \"**/*.ts\" --config tslint.json --exclude '**/node_modules/**' --exclude '**/platforms/**'",
     "plugin.tscwatch": "npm run tsc -- -w",
-    "demo.ios": "npm run tsc && cd ../demo && tns run ios",
+    "demo.ios": "npm run tsc && cd ../demo && tns run ios --force",
     "demo.android": "npm run tsc && cd ../demo && tns run android --force",
     "demo.reset": "cd ../demo && npx rimraf -- hooks node_modules platforms package-lock.json",
     "demo.clean.android": "cd ../demo && tns platform clean android",
