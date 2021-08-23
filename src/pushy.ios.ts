@@ -1,5 +1,5 @@
 import * as application from "@nativescript/core/application";
-import { device } from "@nativescript/core/platform";
+import { Device } from "@nativescript/core/platform";
 import { getClass } from "@nativescript/core/utils/types";
 import { TNSPushNotification } from "./";
 
@@ -97,7 +97,7 @@ const wireNotificationHandler = () => {
   pushy = Pushy.alloc().init(UIApplication.sharedApplication);
 
   // we need to do this here, otherwise a killed app will not receive the notification details upon tap
-  pushy.register((error: NSError, deviceToken: string) => {
+  pushy.register((error: NSError, DeviceToken: string) => {
     if (error !== null) {
       if (getDevicePushTokenReject) {
         getDevicePushTokenReject(error.localizedDescription);
@@ -107,10 +107,10 @@ const wireNotificationHandler = () => {
       latestDevicePushToken = undefined;
     } else {
       if (getDevicePushTokenResolve) {
-        getDevicePushTokenResolve(deviceToken);
+        getDevicePushTokenResolve(DeviceToken);
         getDevicePushTokenResolve = undefined;
       }
-      latestDevicePushToken = deviceToken;
+      latestDevicePushToken = DeviceToken;
       latestDevicePushTokenError = undefined;
     }
   });
@@ -129,7 +129,7 @@ if (UIApplication.sharedApplication) {
 }
 
 let _userNotificationCenterDelegate;
-if (parseInt(device.osVersion) >= 10) {
+if (parseInt(Device.osVersion) >= 10) {
   // adding a little delay to give other code time to wire the delegate
   setTimeout(() => {
     if (UNUserNotificationCenter.currentNotificationCenter().delegate) {
