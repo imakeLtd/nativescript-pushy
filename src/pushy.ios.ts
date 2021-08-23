@@ -1,4 +1,4 @@
-import * as application from "@nativescript/core/application/application";
+import * as application from "@nativescript/core/application";
 import { device } from "@nativescript/core/platform";
 import { getClass } from "@nativescript/core/utils/types";
 import { TNSPushNotification } from "./";
