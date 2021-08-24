@@ -12,8 +12,7 @@
   },
   "scripts": {
     "tsc": "tsc -skipLibCheck",
-    "build": "npm i && npm run tsc && npm run build.native",
-    "build.native": "node scripts/build-native.js",
+    "build": "npm i && npm run tsc",
     "postclone": "npm i && node scripts/postclone.js && cd ../demo && npm i && npx rimraf -- package-lock.json && cd ../src",
     "test.android": "npm run tsc && npm run tslint && cd ../demo && tns build android && tns test android --justlaunch",
     "test.ios": "npm run tsc && npm run tslint && cd ../demo && tns build ios && tns test ios --justlaunch",
@@ -26,7 +25,6 @@
     "plugin.prepare": "npm run build && cd ../demo && tns plugin remove nativescript-pushy && tns plugin add ../src",
     "clean": "npm run demo.reset && npx rimraf -- node_modules package-lock.json && npm i",
     "ci.tslint": "npm i && tslint '**/*.ts' --config '../tslint.json' --exclude '**/node_modules/**' --exclude '**/platforms/**'",
-    "prepack": "npm run build.native",
     "generate.typings.ios": "cd ../demo && TNS_DEBUG_METADATA_PATH=\"$(pwd)/metadata\" tns build ios && TNS_TYPESCRIPT_DECLARATIONS_PATH=\"$(pwd)/typings\" tns build ios && echo 'Now look for your library typings in demo/typings!'",
     "generate.typings.android": "echo '##### Download the latest relevant .jar file from https://jcenter.bintray.com/me/pushy/sdk/ and move it into the plugin /src folder' && java -jar ../../android-dts-generator/dts-generator/build/libs/dts-generator.jar -input ./sdk-*.jar -output platforms/android/typings && rimraf sdk-*.jar && echo '##### Done! Deleted the .jar, and generated typings in src/platforms/android/typings'"
   },
