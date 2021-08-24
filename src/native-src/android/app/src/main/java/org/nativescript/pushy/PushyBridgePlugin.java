@@ -38,7 +38,8 @@ public class PushyBridgePlugin {
         getTokenCallback.handler(PushyBridgePlugin.token);
       }
     }
-    Pushy.listen(activity);
+//    Pushy.setJobServiceInterval(60, activity);
+//    Pushy.listen(activity);
   }
 
   public static boolean isRegistered(Context context) {

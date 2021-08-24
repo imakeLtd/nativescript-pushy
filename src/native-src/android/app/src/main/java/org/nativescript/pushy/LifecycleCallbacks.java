@@ -55,6 +55,7 @@ public class LifecycleCallbacks implements Application.ActivityLifecycleCallback
   public void onActivityCreated(Activity activity, Bundle bundle) {
     Log.d(PushyBridgePlugin.TAG, "onActivityCreated: Application has been created");
 
+    Pushy.setJobServiceInterval(60, activity.getApplicationContext());
     Pushy.listen(activity.getApplicationContext());
   }
 
