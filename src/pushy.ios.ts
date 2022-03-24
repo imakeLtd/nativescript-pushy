@@ -1,5 +1,4 @@
-import * as application from "@nativescript/core/application";
-import { Device } from "@nativescript/core/platform";
+import { Application, Device } from "@nativescript/core";
 import { getClass } from "@nativescript/core/utils/types";
 import { TNSPushNotification } from "./";
 
@@ -40,6 +39,7 @@ function transformNotification(data: NSDictionary<any, any>): TNSPushNotificatio
   return notification;
 }
 
+@NativeClass()
 class UNUserNotificationCenterDelegateImpl extends NSObject implements UNUserNotificationCenterDelegate {
   public static ObjCProtocols = [];
 
@@ -78,15 +78,15 @@ class UNUserNotificationCenterDelegateImpl extends NSObject implements UNUserNot
 
 function getAppDelegate() {
   // Play nice with other plugins by not completely ignoring anything already added to the appdelegate
-  if (application.ios.delegate === undefined) {
+  if (Application.ios.delegate === undefined) {
 
     @ObjCClass(UIApplicationDelegate)
     class UIApplicationDelegateImpl extends UIResponder implements UIApplicationDelegate {
     }
 
-    application.ios.delegate = UIApplicationDelegateImpl;
+    Application.ios.delegate = UIApplicationDelegateImpl;
   }
-  return application.ios.delegate;
+  return Application.ios.delegate;
 }
 
 getAppDelegate().prototype.applicationWillEnterForeground = (application: UIApplication) => {
@@ -125,7 +125,7 @@ const wireNotificationHandler = () => {
 if (UIApplication.sharedApplication) {
   wireNotificationHandler();
 } else {
-  application.on("launch", () => wireNotificationHandler());
+  Application.on("launch", () => wireNotificationHandler());
 }
 
 let _userNotificationCenterDelegate;
@@ -199,11 +199,6 @@ export function getDevicePushToken(): Promise<string> {
   });
 }
 
-export function setNotificationHandler(handler: (notification: TNSPushNotification) => void): void {
-  notificationHandler = handler;
-  processPendingNotifications();
-}
-
 const processPendingNotifications = (): void => {
   if (notificationHandler) {
     while (pendingNotifications.length > 0) {
@@ -211,6 +206,11 @@ const processPendingNotifications = (): void => {
     }
   }
 };
+
+export function setNotificationHandler(handler: (notification: TNSPushNotification) => void): void {
+  notificationHandler = handler;
+  processPendingNotifications();
+}
 
 export function showNotificationWhenAppInForeground(show: boolean): void {
   showForegroundNotifications = show;

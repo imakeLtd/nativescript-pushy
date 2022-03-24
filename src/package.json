@@ -1,30 +1,24 @@
 {
   "name": "@imakeltd/pushy",
-  "version": "3.0.4",
+  "version": "3.0.5",
   "description": "Lightning-fast, highly-reliable push notification delivery with https://pushy.me",
   "main": "pushy",
   "typings": "index.d.ts",
   "nativescript": {
     "platforms": {
-      "android": "5.2.0",
-      "ios": "5.2.0"
+      "android": "8.0.0",
+      "ios": "8.0.0"
     }
   },
   "scripts": {
-    "tsc": "tsc -skipLibCheck",
+    "tsc": "npm i && ts-patch install && tsc",
     "build": "npm i && npm run tsc",
-    "postclone": "npm i && node scripts/postclone.js && cd ../demo && npm i && npx rimraf -- package-lock.json && cd ../src",
-    "test.android": "npm run tsc && npm run tslint && cd ../demo && tns build android && tns test android --justlaunch",
-    "test.ios": "npm run tsc && npm run tslint && cd ../demo && tns build ios && tns test ios --justlaunch",
-    "tslint": "cd .. && tslint \"**/*.ts\" --config tslint.json --exclude '**/node_modules/**' --exclude '**/platforms/**'",
-    "plugin.tscwatch": "npm run tsc -- -w",
-    "demo.ios": "npm run tsc && cd ../demo && tns run ios --force",
-    "demo.android": "npm run tsc && cd ../demo && tns run android --force",
+    "demo.ios": "tsc && npm i && cd ../demo && ns run ios",
+    "demo.android": "npm i && cd ../demo && ns run android",
     "demo.reset": "cd ../demo && npx rimraf -- hooks node_modules platforms package-lock.json",
-    "demo.clean.android": "cd ../demo && tns platform clean android",
-    "plugin.prepare": "npm run build && cd ../demo && tns plugin remove nativescript-pushy && tns plugin add ../src",
+    "demo.clean.android": "cd ../demo && ns platform clean android",
+    "plugin.prepare": "npm run build && cd ../demo && ns plugin remove @imakeltd/pushy && ns plugin add ../src",
     "clean": "npm run demo.reset && npx rimraf -- node_modules package-lock.json && npm i",
-    "ci.tslint": "npm i && tslint '**/*.ts' --config '../tslint.json' --exclude '**/node_modules/**' --exclude '**/platforms/**'",
     "generate.typings.ios": "cd ../demo && TNS_DEBUG_METADATA_PATH=\"$(pwd)/metadata\" tns build ios && TNS_TYPESCRIPT_DECLARATIONS_PATH=\"$(pwd)/typings\" tns build ios && echo 'Now look for your library typings in demo/typings!'",
     "generate.typings.android": "echo '##### Download the latest relevant .jar file from https://jcenter.bintray.com/me/pushy/sdk/ and move it into the plugin /src folder' && java -jar ../../android-dts-generator/dts-generator/build/libs/dts-generator.jar -input ./sdk-*.jar -output platforms/android/typings && rimraf sdk-*.jar && echo '##### Done! Deleted the .jar, and generated typings in src/platforms/android/typings'"
   },
@@ -59,13 +53,17 @@
   "homepage": "https://github.com/EddyVerbruggen/nativescript-pushy",
   "readmeFilename": "README.md",
   "devDependencies": {
-    "@nativescript/core": "~7.0.0",
-    "@nativescript/types": "~7.0.1",
-    "typescript": "4.3.5",
-    "prompt": "^1.0.0",
+    "@nativescript/core": "~8.2.0",
+    "@nativescript/types": "~8.2.0",
+    "@nativescript/webpack": "~5.0.6",
+    "nativescript-vue": "^2.9.0",
+    "prompt": "^1.2.1",
     "rimraf": "^3.0.2",
+    "semver": "^7.3.5",
+    "ts-node": "^10.5.0",
+    "ts-patch": "^2.0.1",
     "tslint": "^6.1.3",
-    "semver": "7.3.2"
+    "typescript": "~4.5.5"
   },
   "dependencies": {},
   "bootstrapper": "nativescript-plugin-seed"
