@@ -1,6 +1,6 @@
 {
   "name": "@imakeltd/pushy",
-  "version": "3.0.5",
+  "version": "3.0.6",
   "description": "Lightning-fast, highly-reliable push notification delivery with https://pushy.me",
   "main": "pushy",
   "typings": "index.d.ts",
