@@ -6,6 +6,7 @@ import android.content.Context;
 import android.app.PendingIntent;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.core.app.NotificationCompat;
@@ -14,6 +15,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Iterator;
+
+import static android.app.PendingIntent.FLAG_IMMUTABLE;
+import static android.app.PendingIntent.FLAG_UPDATE_CURRENT;
 
 public class PushyPushReceiver extends BroadcastReceiver {
     @Override
@@ -79,7 +83,7 @@ public class PushyPushReceiver extends BroadcastReceiver {
                 .setSmallIcon(android.R.drawable.ic_dialog_info)
                 .setContentTitle(notificationTitle)
                 .setContentText(notificationText)
-                .setContentIntent(PendingIntent.getActivity(context, notificationId, launchIntent, PendingIntent.FLAG_UPDATE_CURRENT));
+                .setContentIntent(PendingIntent.getActivity(context, notificationId, launchIntent, Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ? FLAG_UPDATE_CURRENT | FLAG_IMMUTABLE : FLAG_UPDATE_CURRENT));
 
         Pushy.setNotificationChannel(builder, context);
 
